@@ -2,6 +2,7 @@ package ru.sber.services
 
 import org.springframework.beans.factory.DisposableBean
 import org.springframework.beans.factory.InitializingBean
+import org.springframework.beans.factory.config.BeanPostProcessor
 import org.springframework.stereotype.Component
 import javax.annotation.PostConstruct
 
@@ -10,6 +11,7 @@ class CallbackBean : InitializingBean, DisposableBean {
     var greeting: String? = "What's happening?"
 
     override fun afterPropertiesSet() {
+        greeting = "Hello! My name is callbackBean!"
     }
 
     override fun destroy() {
@@ -17,14 +19,14 @@ class CallbackBean : InitializingBean, DisposableBean {
     }
 }
 
-class CombinedBean {
+class CombinedBean : BeanPostProcessor, InitializingBean {
     var postProcessBeforeInitializationOrderMessage: String? = null
     var postConstructOrderMessage: String? = null
     var customInitOrderMessage: String? = null
     var afterPropertiesSetOrderMessage: String? = null
     var postProcessAfterInitializationOrderMessage: String? = null
 
-    fun afterPropertiesSet() {
+    override fun afterPropertiesSet() {
         afterPropertiesSetOrderMessage = "afterPropertiesSet() is called"
     }
 
@@ -32,8 +34,19 @@ class CombinedBean {
         customInitOrderMessage = "customInit() is called"
     }
 
+    @PostConstruct
     fun postConstruct() {
         postConstructOrderMessage = "postConstruct() is called"
+    }
+
+    override fun postProcessBeforeInitialization(bean: Any, beanName: String): Any? {
+        postProcessBeforeInitializationOrderMessage = "postProcessBeforeInitialization() is called"
+        return super.postProcessBeforeInitialization(bean, beanName)
+    }
+
+    override fun postProcessAfterInitialization(bean: Any, beanName: String): Any? {
+        postProcessAfterInitializationOrderMessage = "postProcessAfterInitialization() is called"
+        return super.postProcessAfterInitialization(bean, beanName)
     }
 }
 
