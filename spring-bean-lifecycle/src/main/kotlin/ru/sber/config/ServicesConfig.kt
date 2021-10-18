@@ -5,6 +5,7 @@ import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
 import ru.sber.services.CombinedBean
 import ru.sber.services.processors.MyBeanFactoryPostProcessor
+import ru.sber.services.processors.MyBeanPostProcessor
 
 @Configuration
 @ComponentScan("ru.sber.services")
@@ -13,5 +14,8 @@ class ServicesConfig {
     fun combinedBean() = CombinedBean()
 
     @Bean
-    fun myConfigBean() = MyBeanFactoryPostProcessor()
+    fun myBeanFactoryPostProcessor() = MyBeanFactoryPostProcessor()
+
+    @Bean
+    fun meBeanPostProcessor() = MyBeanPostProcessor()
 }
