@@ -4,12 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Condition
 import org.springframework.context.annotation.ConditionContext
 import org.springframework.context.annotation.Conditional
+import org.springframework.context.annotation.Profile
 import org.springframework.core.type.AnnotatedTypeMetadata
 import org.springframework.stereotype.Component
 
 class ProdProfileCondition : Condition {
     override fun matches(context: ConditionContext, metadata: AnnotatedTypeMetadata): Boolean {
-        return context.environment.activeProfiles.contains("qa")
+        return context.environment.activeProfiles.contains("prod")
     }
 }
 
@@ -26,7 +27,7 @@ class ConditionalService : ConditionalInterface {
 @Component
 class AnotherConditionalService : ConditionalInterface {
     override fun toString(): String {
-        return "ConditionalService"
+        return "AnotherConditionalService"
     }
 }
 
