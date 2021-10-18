@@ -39,15 +39,15 @@ class FileServer {
 
     private fun handle(socket: Socket, fs: VFilesystem) {
         socket.use { s ->
-            s.getInputStream().bufferedReader().use { r ->
-                val clientRequest = r.readLine()
+            val reader = s.getInputStream().bufferedReader()
+            val clientRequest = reader.readLine()
 
-                PrintWriter(s.getOutputStream()).use { p ->
-                    val serverResponse = getResponse(clientRequest, fs)
-                    p.println(serverResponse)
-                    p.flush()
-                }
-            }
+            val writer = PrintWriter(s.getOutputStream())
+            val serverResponse = getResponse(clientRequest, fs)
+
+            writer.println(serverResponse)
+            writer.flush()
+
         }
     }
 
